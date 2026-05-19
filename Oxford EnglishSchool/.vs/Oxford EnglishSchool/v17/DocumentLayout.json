@@ -1,0 +1,241 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|c:\\projetos\\cadastrocliente\\oxford englishschool\\oxford englishschool\\controllers\\aulascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|solutionrelative:oxford englishschool\\controllers\\aulascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|c:\\projetos\\cadastrocliente\\oxford englishschool\\oxford englishschool\\controllers\\alunoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|solutionrelative:oxford englishschool\\controllers\\alunoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|c:\\projetos\\cadastrocliente\\oxford englishschool\\oxford englishschool\\controllers\\professorescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|solutionrelative:oxford englishschool\\controllers\\professorescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|c:\\projetos\\cadastrocliente\\oxford englishschool\\oxford englishschool\\models\\dtos\\dtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|solutionrelative:oxford englishschool\\models\\dtos\\dtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|c:\\projetos\\cadastrocliente\\oxford englishschool\\oxford englishschool\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|solutionrelative:oxford englishschool\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|c:\\projetos\\cadastrocliente\\oxford englishschool\\oxford englishschool\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|solutionrelative:oxford englishschool\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|c:\\projetos\\cadastrocliente\\oxford englishschool\\oxford englishschool\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|solutionrelative:oxford englishschool\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|c:\\projetos\\cadastrocliente\\oxford englishschool\\oxford englishschool\\models\\models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|solutionrelative:oxford englishschool\\models\\models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|c:\\projetos\\cadastrocliente\\oxford englishschool\\oxford englishschool\\repository\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|solutionrelative:oxford englishschool\\repository\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|c:\\projetos\\cadastrocliente\\oxford englishschool\\oxford englishschool\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|solutionrelative:oxford englishschool\\models\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|c:\\projetos\\cadastrocliente\\oxford englishschool\\oxford englishschool\\models\\dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B195FBD1-17E1-4501-8022-1E4A2FB11E0C}|Oxford EnglishSchool\\Oxford EnglishSchool.csproj|solutionrelative:oxford englishschool\\models\\dtos\\logindto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 12,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:133:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:134:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:135:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:136:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8b06f52-6d01-11d2-aa7d-00c04f990343}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "Oxford EnglishSchool\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "Oxford EnglishSchool\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAcwCUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T18:53:06.299Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Usuario.cs",
+              "DocumentMoniker": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Models\\Usuario.cs",
+              "RelativeDocumentMoniker": "Oxford EnglishSchool\\Models\\Usuario.cs",
+              "ToolTip": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Models\\Usuario.cs",
+              "RelativeToolTip": "Oxford EnglishSchool\\Models\\Usuario.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T18:47:49.035Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "LoginDto.cs",
+              "DocumentMoniker": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Models\\DTOs\\LoginDto.cs",
+              "RelativeDocumentMoniker": "Oxford EnglishSchool\\Models\\DTOs\\LoginDto.cs",
+              "ToolTip": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Models\\DTOs\\LoginDto.cs",
+              "RelativeToolTip": "Oxford EnglishSchool\\Models\\DTOs\\LoginDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T18:46:30.861Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ProfessoresController.cs",
+              "DocumentMoniker": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Controllers\\ProfessoresController.cs",
+              "RelativeDocumentMoniker": "Oxford EnglishSchool\\Controllers\\ProfessoresController.cs",
+              "ToolTip": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Controllers\\ProfessoresController.cs",
+              "RelativeToolTip": "Oxford EnglishSchool\\Controllers\\ProfessoresController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE0AAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T23:41:17.199Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AulasController.cs",
+              "DocumentMoniker": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Controllers\\AulasController.cs",
+              "RelativeDocumentMoniker": "Oxford EnglishSchool\\Controllers\\AulasController.cs",
+              "ToolTip": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Controllers\\AulasController.cs",
+              "RelativeToolTip": "Oxford EnglishSchool\\Controllers\\AulasController.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAIwF0AAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T21:52:47.654Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AlunosController.cs",
+              "DocumentMoniker": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Controllers\\AlunosController.cs",
+              "RelativeDocumentMoniker": "Oxford EnglishSchool\\Controllers\\AlunosController.cs",
+              "ToolTip": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Controllers\\AlunosController.cs",
+              "RelativeToolTip": "Oxford EnglishSchool\\Controllers\\AlunosController.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAcwDIAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T21:48:29.448Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\appsettings.json",
+              "RelativeDocumentMoniker": "Oxford EnglishSchool\\appsettings.json",
+              "ToolTip": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\appsettings.json",
+              "RelativeToolTip": "Oxford EnglishSchool\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-05-14T21:47:41.215Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Repository\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "Oxford EnglishSchool\\Repository\\AppDbContext.cs",
+              "ToolTip": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Repository\\AppDbContext.cs",
+              "RelativeToolTip": "Oxford EnglishSchool\\Repository\\AppDbContext.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAA9wBwAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T21:43:19.042Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DTOs.cs",
+              "DocumentMoniker": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Models\\DTOs\\DTOs.cs",
+              "RelativeDocumentMoniker": "Oxford EnglishSchool\\Models\\DTOs\\DTOs.cs",
+              "ToolTip": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Models\\DTOs\\DTOs.cs",
+              "RelativeToolTip": "Oxford EnglishSchool\\Models\\DTOs\\DTOs.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAIwGEAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T21:42:27.084Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Models.cs",
+              "DocumentMoniker": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Models\\Models.cs",
+              "RelativeDocumentMoniker": "Oxford EnglishSchool\\Models\\Models.cs",
+              "ToolTip": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Models\\Models.cs",
+              "RelativeToolTip": "Oxford EnglishSchool\\Models\\Models.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAA5wCUAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T21:42:15.011Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Program.cs",
+              "RelativeDocumentMoniker": "Oxford EnglishSchool\\Program.cs",
+              "ToolTip": "C:\\Projetos\\CadastroCliente\\Oxford EnglishSchool\\Oxford EnglishSchool\\Program.cs",
+              "RelativeToolTip": "Oxford EnglishSchool\\Program.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAuwEcAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T21:20:08.663Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 778,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8034f19-ab72-4f06-83fd-f6832b41aa63}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

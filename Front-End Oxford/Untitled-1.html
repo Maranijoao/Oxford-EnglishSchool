@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Oxford English School
+    </title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+
+        <div class="logo">
+            Oxford <span>English</span> School
+        </div>
+
+        <div id="usuarioLogado" class="usuario-logado"></div>
+
+        <nav>
+
+            <a href="#inicio">
+                Início
+            </a>
+
+            <a href="#sobre">
+                Sobre
+            </a>
+
+            <a href="#funcionalidades">
+                Funcionalidades
+            </a>
+
+            <a href="#qualidade">
+                Qualidade
+            </a>
+
+            <a href="#dashboard">
+                Dashboard
+            </a>
+
+            <a href="#admin">
+                Administração
+            </a>
+
+            <a href="#contato">
+                Contato
+            </a>
+
+            <!-- LOGIN -->
+            <button class="btn-login" onclick="abrirLogin()">
+
+                Login
+
+            </button>
+
+        </nav>
+
+        <!-- USUÁRIO LOGADO -->
+        <div id="usuarioLogado" class="usuario-logado">
+        </div>
+
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+
+        <div class="hero-text">
+
+            <h1>
+                Sistema Web de Gestão Escolar
+            </h1>
+
+            <p>
+                Controle completo de alunos,
+                professores e aulas presenciais
+                da Oxford English School.
+            </p>
+
+            <div class="buttons">
+
+                <a href="#funcionalidades" class="btn">
+
+                    Conhecer Funcionalidades
+
+                </a>
+
+                <a href="#contato" class="btn-outline">
+
+                    Fale Conosco
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- SOBRE -->
+    <section id="sobre">
+
+        <div class="container">
+
+            <div class="title fade">
+
+                <h2>
+                    Sobre o Projeto
+                </h2>
+
+                <p>
+                    Sistema desenvolvido para melhorar
+                    processos administrativos e
+                    organização escolar.
+                </p>
+
+            </div>
+
+            <div class="grid">
+
+                <div class="card">
+
+                    <i class="fas fa-clipboard-check icon"></i>
+
+                    <h3>
+                        Redução de erros
+                    </h3>
+
+                    <p>
+                        Automação dos processos
+                        administrativos e melhor
+                        controle das informações.
+                    </p>
+
+                </div>
+
+                <div class="card">
+
+                    <i class="fas fa-database icon"></i>
+
+                    <h3>
+                        Controle total
+                    </h3>
+
+                    <p>
+                        Gestão centralizada de alunos,
+                        professores, aulas e relatórios.
+                    </p>
+
+                </div>
+
+                <div class="card">
+
+                    <i class="fas fa-rocket icon"></i>
+
+                    <h3>
+                        Otimização
+                    </h3>
+
+                    <p>
+                        Melhoria na produtividade
+                        e agilidade no atendimento.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FUNCIONALIDADES -->
+    <section id="funcionalidades">
+
+        <div class="container">
+
+            <div class="title fade">
+
+                <h2>
+                    Funcionalidades
+                </h2>
+
+                <p>
+                    Recursos principais do sistema.
+                </p>
+
+            </div>
+
+            <div class="grid">
+
+                <!-- GESTÃO DE ALUNOS -->
+                <button class="card feature-btn" onclick="abrirFormularioAluno()">
+
+                    <i class="fas fa-user-graduate icon"></i>
+
+                    <h3>
+                        Gestão de Alunos
+                    </h3>
+
+                </button>
+
+                <!-- GESTÃO DE PROFESSORES -->
+                <button class="card feature-btn" onclick="abrirFormularioProfessor()">
+
+                    <i class="fas fa-chalkboard-teacher icon"></i>
+
+                    <h3>
+                        Gestão de Professores
+                    </h3>
+
+                </button>
+
+                <!-- AULAS (VISUALIZAR) -->
+                <button class="card feature-btn" onclick="mostrarAulaPresencial()">
+
+                    <i class="fas fa-school icon"></i>
+
+                    <h3>
+                        Aulas Presenciais
+                    </h3>
+
+                </button>
+
+                <!-- RELATÓRIOS -->
+                <button class="card feature-btn" onclick="mostrarRelatorio()">
+
+                    <i class="fas fa-chart-line icon"></i>
+
+                    <h3>
+                        Relatórios
+                    </h3>
+
+                </button>
+
+                <!-- HORÁRIOS -->
+                <button class="card feature-btn" onclick="mostrarHorarios()">
+
+                    <i class="fas fa-clock icon"></i>
+
+                    <h3>
+                        Controle de Horários
+                    </h3>
+
+                </button>
+
+            </div>
+
+            <!-- RESULTADO -->
+            <div id="areaResultado" class="area-resultado">
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- QUALIDADE -->
+    <section id="qualidade">
+
+        <div class="container">
+
+            <div class="title fade">
+
+                <h2>
+                    Qualidade ISO/IEC 25010
+                </h2>
+
+                <p>
+                    Características de qualidade do sistema.
+                </p>
+
+            </div>
+
+            <div class="grid">
+
+                <button class="card feature-btn quality-card" onclick="abrirQualidade('desempenho')">
+
+                    <i class="fas fa-gauge-high icon"></i>
+
+                    <h3>
+                        Desempenho
+                    </h3>
+
+                </button>
+
+                <button class="card feature-btn quality-card" onclick="abrirQualidade('seguranca')">
+
+                    <i class="fas fa-lock icon"></i>
+
+                    <h3>
+                        Segurança
+                    </h3>
+
+                </button>
+
+                <button class="card feature-btn quality-card" onclick="abrirQualidade('usabilidade')">
+
+                    <i class="fas fa-face-smile icon"></i>
+
+                    <h3>
+                        Usabilidade
+                    </h3>
+
+                </button>
+
+                <button class="card feature-btn quality-card" onclick="abrirQualidade('confiabilidade')">
+
+                    <i class="fas fa-circle-check icon"></i>
+
+                    <h3>
+                        Confiabilidade
+                    </h3>
+
+                </button>
+
+            </div>
+
+            <div id="painelQualidade" class="painel-qualidade">
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard">
+
+        <div class="container">
+
+            <div class="title fade">
+
+                <h2>
+                    Dashboard do Sistema
+                </h2>
+
+                <p>
+                    Visão geral da escola.
+                </p>
+
+            </div>
+
+            <div class="grid">
+
+                <button class="card feature-btn" onclick="mostrarDashboard('Total de alunos cadastrados.')">
+
+                    <h1 id="totalAlunos">
+                        0
+                    </h1>
+
+                    <p>
+                        Alunos
+                    </p>
+
+                </button>
+
+                <button class="card feature-btn" onclick="mostrarDashboard('Total de professores cadastrados.')">
+
+                    <h1 id="totalProfessores">
+                        0
+                    </h1>
+
+                    <p>
+                        Professores
+                    </p>
+
+                </button>
+
+                <button class="card feature-btn" onclick="mostrarDashboard('Carga horária total cadastrada.')">
+
+                    <h1 id="totalAulas">
+                        0h
+                    </h1>
+
+                    <p>
+                        Aulas
+                    </p>
+
+                </button>
+
+                <button class="card feature-btn" onclick="mostrarDashboard('Quantidade de níveis cadastrados.')">
+
+                    <h1 id="totalNiveis">
+                        0
+                    </h1>
+
+                    <p>
+                        Níveis
+                    </p>
+
+                </button>
+
+            </div>
+
+            <div id="painelInfo" class="area-resultado">
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ADMINISTRAÇÃO -->
+    <section id="admin">
+
+        <div class="container">
+
+            <div class="title fade">
+
+                <h2>
+                    Administração
+                </h2>
+
+                <p>
+                    Painel administrativo do sistema.
+                </p>
+
+            </div>
+
+            <div class="admin-cards">
+
+                <div class="admin-card" onclick="abrirAdminAlunos()">
+
+                    <i class="fas fa-user-graduate icon"></i>
+
+                    <h3>
+                        Gerenciar Alunos
+                    </h3>
+
+                    <p id="contadorAlunos">
+                        0 alunos cadastrados
+                    </p>
+
+                </div>
+
+                <div class="admin-card" onclick="abrirAdminProfessores()">
+
+                    <i class="fas fa-chalkboard-teacher icon"></i>
+
+                    <h3>
+                        Gerenciar Professores
+                    </h3>
+
+                    <p id="contadorProfessores">
+                        0 professores cadastrados
+                    </p>
+
+                </div>
+
+                <!-- AULAS -->
+                <div class="admin-card" onclick="abrirAdminAulas()">
+
+                    <i class="fas fa-book-open icon"></i>
+
+                    <h3>
+                        Gerenciar Aulas
+                    </h3>
+
+                    <p id="contadorAulas">
+                        0 aulas cadastradas
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div id="adminPanel" class="admin-panel">
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- MODAL EDIÇÃO -->
+    <div id="modalEdicao" class="modal">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3 id="modalTitulo"></h3>
+
+                <button class="modal-close" onclick="fecharModal()">
+
+                    ×
+
+                </button>
+
+            </div>
+
+            <div id="modalCampos" class="modal-body"></div>
+
+            <div class="modal-actions">
+
+                <button class="btn-save" onclick="salvarEdicao()">
+
+                    Salvar Alterações
+
+                </button>
+
+                <button class="btn-cancel" onclick="fecharModal()">
+
+                    Cancelar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MODAL LOGIN -->
+    <div id="modalLogin" class="modal">
+
+        <div class="modal-content login-modal">
+
+            <h2>
+                Login Administrativo
+            </h2>
+
+            <div class="login-fields">
+
+                <input id="loginEmail" type="email" placeholder="E-mail">
+
+                <input id="loginSenha" type="password" placeholder="Senha">
+
+            </div>
+
+            <div class="modal-actions">
+
+                <button class="btn-save" onclick="realizarLogin()">
+
+                    Entrar
+
+                </button>
+
+                <button class="btn-cancel" onclick="fecharLogin()">
+
+                    Cancelar
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CONTATO -->
+    <section id="contato">
+
+        <div class="container">
+
+            <div class="title fade">
+
+                <h2>
+                    Contato
+                </h2>
+
+                <p>
+                    Entre em contato com a
+                    Oxford English School.
+                </p>
+
+            </div>
+
+            <div class="contact">
+
+                <form id="formContato">
+
+                    <input type="text" placeholder="Nome" required>
+
+                    <input type="email" placeholder="Email" required>
+
+                    <input type="text" placeholder="Telefone">
+
+                    <textarea placeholder="Mensagem">
+                    </textarea>
+
+                    <button type="submit" class="btn">
+
+                        Enviar
+
+                    </button>
+
+                </form>
+
+                <div class="contact-info">
+
+                    <h3>
+                        Oxford English School
+                    </h3>
+
+                    <p>
+                        São Paulo - SP
+                    </p>
+
+                    <p>
+                        (11) 99999-9999
+                    </p>
+
+                    <p>
+                        contato@oxford.com
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+
+        <p>
+            © 2026 Oxford English School
+            - Todos os direitos reservados
+        </p>
+
+    </footer>
+
+    <!-- SCRIPT -->
+    <script src="js/script.js"></script>
+
+    <!-- VLIBRAS -->
+    <div vw class="enabled">
+
+        <div vw-access-button class="active">
+        </div>
+
+        <div vw-plugin-wrapper>
+
+            <div class="vw-plugin-top-wrapper"></div>
+
+        </div>
+
+    </div>
+
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+
+    <script>
+
+        new window.VLibras.Widget(
+            "https://vlibras.gov.br/app"
+        );
+
+    </script>
+
+</body>
+
+</html>
