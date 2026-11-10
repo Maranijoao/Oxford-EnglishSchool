@@ -21,8 +21,43 @@ window.addEventListener("beforeinstallprompt", (e) => {
     if (btn) btn.hidden = false;
 });
 
+// iPhone/iPad: nenhum navegador do iOS dispara "beforeinstallprompt".
+// A instalação é manual (Compartilhar → Adicionar à Tela de Início),
+// então o botão abre um passo a passo.
+function ehIOS() {
+    const ua = navigator.userAgent;
+    const iPadOS = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+    return /iPhone|iPad|iPod/i.test(ua) || iPadOS;
+}
+
+function appJaInstalado() {
+    return window.navigator.standalone === true ||
+        window.matchMedia("(display-mode: standalone)").matches;
+}
+
+function prepararInstalacaoIOS() {
+    if (!ehIOS() || appJaInstalado()) return;
+    const btn = document.getElementById("btnInstalarApp");
+    if (btn) btn.hidden = false;
+}
+
+function abrirInstrucoesIOS() {
+    const modal = document.getElementById("modalInstalarIOS");
+    if (modal) modal.style.display = "flex";
+}
+
+function fecharInstrucoesIOS() {
+    const modal = document.getElementById("modalInstalarIOS");
+    if (modal) modal.style.display = "none";
+}
+
+window.addEventListener("load", prepararInstalacaoIOS);
+
 function instalarApp() {
-    if (!eventoInstalacao) return;
+    if (!eventoInstalacao) {
+        if (ehIOS()) abrirInstrucoesIOS();
+        return;
+    }
     eventoInstalacao.prompt();
     eventoInstalacao.userChoice.finally(() => {
         eventoInstalacao = null;

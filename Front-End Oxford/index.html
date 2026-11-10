@@ -651,6 +651,56 @@
 
     </footer>
 
+    <!-- INSTALAR NO IPHONE (PWA) -->
+    <div id="modalInstalarIOS" class="modal" onclick="if (event.target === this) fecharInstrucoesIOS()">
+
+        <div class="modal-content instalar-ios">
+
+            <div class="modal-header">
+
+                <h3>Instalar o app no iPhone</h3>
+
+                <button class="modal-close" onclick="fecharInstrucoesIOS()" aria-label="Fechar">
+                    ×
+                </button>
+
+            </div>
+
+            <div class="instalar-ios-app">
+                <img src="icons/apple-touch-icon.png" alt="" width="56" height="56">
+                <div>
+                    <strong>Oxford English School</strong>
+                    <span>Abre em tela cheia, como um aplicativo</span>
+                </div>
+            </div>
+
+            <ol class="instalar-ios-passos">
+                <li>
+                    <span class="passo-num">1</span>
+                    <span>Toque em <strong>Compartilhar</strong>
+                        <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                        na barra do navegador (no Safari novo, fica no menu
+                        <i class="fa-solid fa-ellipsis"></i>).</span>
+                </li>
+                <li>
+                    <span class="passo-num">2</span>
+                    <span>Role a lista e toque em <strong>Adicionar à Tela de Início</strong>
+                        <i class="fa-regular fa-square-plus"></i>.</span>
+                </li>
+                <li>
+                    <span class="passo-num">3</span>
+                    <span>Toque em <strong>Adicionar</strong>. O ícone da Oxford aparecerá na sua tela inicial.</span>
+                </li>
+            </ol>
+
+            <div class="modal-actions">
+                <button class="btn-save" onclick="fecharInstrucoesIOS()">Entendi</button>
+            </div>
+
+        </div>
+
+    </div>
+
     <!-- AVISO OFFLINE (PWA) -->
     <div id="avisoOffline" class="aviso-offline" role="status" hidden>
         <i class="fa-solid fa-wifi"></i>
