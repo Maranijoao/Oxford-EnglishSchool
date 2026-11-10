@@ -2376,7 +2376,7 @@ function abrirQualidade(tipo) {
 
 
                     <p>
-                        Média de 0.8 segundos.
+                        Meta: responder em menos de 1 segundo.
                     </p>
 
 
@@ -2403,7 +2403,7 @@ function abrirQualidade(tipo) {
 
 
                     <p>
-                        Carregamento rápido.
+                        Meta: abrir a página inicial em poucos segundos, também no celular.
                     </p>
 
 
@@ -2430,7 +2430,7 @@ function abrirQualidade(tipo) {
 
 
                     <p>
-                        Consumo otimizado.
+                        Meta: consumo baixo, compatível com o plano gratuito do servidor.
                     </p>
 
 
@@ -2457,7 +2457,7 @@ function abrirQualidade(tipo) {
 
 
                     <p>
-                        127 usuários conectados.
+                        Meta: atender vários usuários ao mesmo tempo sem perder desempenho.
                     </p>
 
 
@@ -2534,7 +2534,7 @@ function abrirQualidade(tipo) {
 
 
                     <p>
-                        Dados criptografados.
+                        Senhas guardadas com hash (BCrypt); dados pessoais acessíveis só com login.
                     </p>
 
 
@@ -2631,7 +2631,7 @@ function abrirQualidade(tipo) {
 
 
                     <p>
-                        95% dos usuários aprovam o sistema.
+                        Meta: alta aprovação, medida por pesquisa de satisfação.
                     </p>
 
 
@@ -2653,7 +2653,7 @@ function abrirQualidade(tipo) {
 
 
                     <p>
-                        Interface intuitiva e moderna.
+                        Meta: interface intuitiva e moderna.
                     </p>
 
 
@@ -2670,7 +2670,7 @@ function abrirQualidade(tipo) {
 
 
                     <h4>
-                        Feedbacks
+                        Exemplos de feedback
                     </h4>
 
 
@@ -2701,7 +2701,7 @@ function abrirQualidade(tipo) {
 
 
                     <p>
-                        Excelente aceitação dos usuários.
+                        Meta: boa aceitação dos usuários.
                     </p>
 
 
@@ -2749,7 +2749,7 @@ function abrirQualidade(tipo) {
 
 
                     <p>
-                        99.8% uptime mensal.
+                        Meta: alta disponibilidade. No plano gratuito, a API hiberna após ~15 min sem uso.
                     </p>
 
 
@@ -2776,7 +2776,7 @@ function abrirQualidade(tipo) {
 
 
                     <p>
-                        Apenas 2 falhas leves.
+                        Meta: nenhuma falha crítica; toda falha registrada e corrigida.
                     </p>
 
 
@@ -2797,7 +2797,7 @@ function abrirQualidade(tipo) {
 
 
                     <p>
-                        Sistema disponível 24h.
+                        Meta: sistema disponível 24h.
                     </p>
 
 
@@ -2819,7 +2819,7 @@ function abrirQualidade(tipo) {
 
 
                     <p>
-                        Sem quedas críticas.
+                        Meta: nenhuma queda crítica.
                     </p>
 
 
@@ -2837,6 +2837,22 @@ function abrirQualidade(tipo) {
         `;
     }
 
+
+    // Os valores do painel são metas de projeto, não medições reais.
+    const titulo = painel.querySelector("h3");
+
+    if (titulo) {
+        titulo.insertAdjacentHTML("afterend", `
+            <p class="selo-ilustrativo">
+                <i class="fas fa-circle-info"></i>
+                Exemplo — valores ilustrativos
+            </p>
+            <p class="nota-ilustrativa">
+                Os números e indicadores abaixo são metas do projeto,
+                não medições do sistema em uso.
+            </p>
+        `);
+    }
 
     painel.scrollIntoView({
         behavior: "smooth"
