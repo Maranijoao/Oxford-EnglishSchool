@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OxfordSchoolAPI.Data;
@@ -12,6 +13,8 @@ public class RelatoriosController : ControllerBase
     public RelatoriosController(AppDbContext db) => _db = db;
 
     // GET api/relatorios/dashboard
+    // Público (página inicial): devolve SOMENTE contagens, sem nomes.
+    [AllowAnonymous]
     [HttpGet("dashboard")]
     public async Task<IActionResult> Dashboard()
     {
@@ -20,7 +23,27 @@ public class RelatoriosController : ControllerBase
         var totalAulas       = await _db.Aulas.CountAsync();
         var aulasPresenciais = await _db.Aulas.CountAsync(a => a.Modalidade == "Presencial");
         var aulasOnline      = await _db.Aulas.CountAsync(a => a.Modalidade == "Online");
+        var totalNiveis      = await _db.Alunos
+            .Where(a => a.Ativo && a.NivelIngles != null && a.NivelIngles != "")
+            .Select(a => a.NivelIngles)
+            .Distinct()
+            .CountAsync();
 
+        return Ok(new
+        {
+            totalAlunos,
+            totalProfessores,
+            totalAulas,
+            aulasPresenciais,
+            aulasOnline,
+            totalNiveis
+        });
+    }
+
+    // GET api/relatorios/proximas-aulas  (requer login: contém nomes)
+    [HttpGet("proximas-aulas")]
+    public async Task<IActionResult> ProximasAulas()
+    {
         var proximas = await _db.Aulas
             .Include(a => a.Professor)
             .Where(a => a.DataHoraInicio >= DateTime.UtcNow)
@@ -34,15 +57,7 @@ public class RelatoriosController : ControllerBase
             })
             .ToListAsync();
 
-        return Ok(new
-        {
-            totalAlunos,
-            totalProfessores,
-            totalAulas,
-            aulasPresenciais,
-            aulasOnline,
-            proximasAulas = proximas
-        });
+        return Ok(proximas);
     }
 
     // GET api/relatorios/alunos-por-nivel

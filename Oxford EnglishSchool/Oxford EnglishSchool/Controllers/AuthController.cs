@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -18,25 +19,35 @@ public class AuthController : ControllerBase
 {
     private readonly AppDbContext _db;
     private readonly IConfiguration _config;
+    private readonly IWebHostEnvironment _env;
 
     public AuthController(
         AppDbContext db,
-        IConfiguration config
+        IConfiguration config,
+        IWebHostEnvironment env
     )
     {
         _db = db;
         _config = config;
+        _env = env;
     }
 
+    // Utilitário de desenvolvimento: fora de Development responde 404.
+    [AllowAnonymous]
+    [ApiExplorerSettings(IgnoreApi = true)]
     [HttpGet("gerar-hash")]
     public IActionResult GerarHash()
     {
+        if (!_env.IsDevelopment())
+            return NotFound();
+
         var hash =
             BCrypt.Net.BCrypt.HashPassword("123456");
 
         return Ok(hash);
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<IActionResult> Login(
         [FromBody] LoginDto dto
@@ -53,7 +64,7 @@ public class AuthController : ControllerBase
             return Unauthorized(
                 new
                 {
-                    message = "Usuário inválido."
+                    message = "E-mail ou senha inválidos."
                 }
             );
         }
@@ -69,7 +80,7 @@ public class AuthController : ControllerBase
             return Unauthorized(
                 new
                 {
-                    message = "Senha inválida."
+                    message = "E-mail ou senha inválidos."
                 }
             );
         }
@@ -103,11 +114,14 @@ public class AuthController : ControllerBase
             SecurityAlgorithms.HmacSha256
         );
 
+        var expiracao = DateTime.UtcNow.AddHours(8);
+
         var token = new JwtSecurityToken(
             issuer: _config["Jwt:Issuer"],
             audience: _config["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.Now.AddHours(8),
+            notBefore: DateTime.UtcNow,
+            expires: expiracao,
             signingCredentials: creds
         );
 
@@ -118,8 +132,7 @@ public class AuthController : ControllerBase
                     new JwtSecurityTokenHandler()
                         .WriteToken(token),
 
-                expiracao =
-                    DateTime.Now.AddHours(8),
+                expiracao,
 
                 nome = usuario.Nome,
 

@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -49,6 +51,28 @@ builder.Services.AddSwaggerGen(c =>
 
         Description =
             "API de gerenciamento acadêmico da Oxford English School"
+    });
+
+    // Botão "Authorize" no Swagger: cole o token devolvido por /api/Auth/login
+    var esquemaBearer = new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Token JWT obtido em POST /api/Auth/login",
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = "Bearer"
+        }
+    };
+
+    c.AddSecurityDefinition("Bearer", esquemaBearer);
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        [esquemaBearer] = Array.Empty<string>()
     });
 });
 
@@ -116,11 +140,29 @@ builder.Services
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(jwtKey)
-                    )
+                    ),
+
+                // Token sem "exp" é recusado; só aceita HS256 (o algoritmo
+                // usado no login), evitando troca de algoritmo no header.
+                RequireExpirationTime = true,
+
+                RequireSignedTokens = true,
+
+                ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256 },
+
+                // Tolerância de relógio: padrão é 5 min, reduzido para 1 min.
+                ClockSkew = TimeSpan.FromMinutes(1)
             };
     });
 
-builder.Services.AddAuthorization();
+// Toda rota exige usuário autenticado, salvo as marcadas com [AllowAnonymous]
+// (login, dashboard público só com contagens) e o /health do Render.
+builder.Services.AddAuthorization(opt =>
+{
+    opt.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 // O Render termina o HTTPS no proxy e repassa HTTP para o container.
 builder.Services.Configure<ForwardedHeadersOptions>(opt =>
@@ -142,18 +184,21 @@ await DbInitializer.InicializarAsync(app.Services);
 
 app.UseForwardedHeaders();
 
-// Swagger fica disponível também em produção para a apresentação do PIM.
-app.UseSwagger();
-
-app.UseSwaggerUI(c =>
+// Swagger só em desenvolvimento (não expõe o mapa da API em produção).
+if (app.Environment.IsDevelopment())
 {
-    c.SwaggerEndpoint(
-        "/swagger/v1/swagger.json",
-        "Oxford School API v1"
-    );
+    app.UseSwagger();
 
-    c.RoutePrefix = "swagger";
-});
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint(
+            "/swagger/v1/swagger.json",
+            "Oxford School API v1"
+        );
+
+        c.RoutePrefix = "swagger";
+    });
+}
 
 app.UseCors("FrontendPolicy");
 
@@ -167,10 +212,16 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapHealthChecks("/health");
+// O Render consulta /health sem token para saber se o container está no ar.
+app.MapHealthChecks("/health")
+   .AllowAnonymous();
 
-app.MapGet("/", () => Results.Redirect("/swagger"))
-   .ExcludeFromDescription();
+if (app.Environment.IsDevelopment())
+{
+    app.MapGet("/", () => Results.Redirect("/swagger"))
+       .AllowAnonymous()
+       .ExcludeFromDescription();
+}
 
 app.MapControllers();
 

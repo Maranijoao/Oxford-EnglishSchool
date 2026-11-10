@@ -37,12 +37,14 @@ async function realizarLogin() {
     const email =
         document.getElementById(
             "loginEmail"
-        ).value;
+        ).value.trim();
 
-    const senha =
+    const senhaInput =
         document.getElementById(
             "loginSenha"
-        ).value;
+        );
+
+    const senha = senhaInput.value;
 
     if (email === "" || senha === "") {
 
@@ -53,32 +55,11 @@ async function realizarLogin() {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Auth/login`,
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    email,
-                    senha
-                })
-            }
-        );
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Usuário ou senha inválidos."
-            );
-        }
-
-        const data = await response.json();
-
-        console.log("LOGIN:", data);
+        const data = await api("/api/Auth/login", {
+            method: "POST",
+            body: { email, senha },
+            autenticar: false
+        });
 
         // TOKEN
         localStorage.setItem(
@@ -96,21 +77,23 @@ async function realizarLogin() {
             data.email
         );
 
-        alert(
-            "Login realizado com sucesso!"
-        );
+        avisoSessaoMostrado = false;
+
+        senhaInput.value = "";
 
         fecharLogin();
 
         atualizarUsuarioLogado();
 
-    } catch (error) {
-
-        console.error(error);
+        atualizarPermissoes();
 
         alert(
-            "Erro ao realizar login."
+            "Login realizado com sucesso!"
         );
+
+    } catch (error) {
+
+        mostrarErro(error, "Erro ao realizar login.");
     }
 }
 
@@ -126,12 +109,14 @@ function atualizarUsuarioLogado() {
             "usuarioLogado"
         );
 
-    if (nome) {
+    if (!div) return;
+
+    if (nome && usuarioEstaLogado()) {
 
         div.innerHTML = `
 
             <i class="fas fa-user-circle"></i>
-            ${nome}
+            <span class="usuario-nome"></span>
 
             <button
                 onclick="logout()"
@@ -140,16 +125,18 @@ function atualizarUsuarioLogado() {
                 Sair
             </button>
         `;
+
+        div.querySelector(".usuario-nome").textContent = nome;
+
+    } else {
+
+        div.innerHTML = "";
     }
 }
 
 function logout() {
 
-    localStorage.removeItem("token");
-
-    localStorage.removeItem("usuarioNome");
-
-    localStorage.removeItem("usuarioEmail");
+    limparSessao();
 
     location.reload();
 }
@@ -158,15 +145,17 @@ function logout() {
 
 function usuarioEstaLogado() {
 
-    const token =
-        localStorage.getItem("token");
-
-    return token !== null;
+    // token presente E dentro da validade
+    return tokenValido();
 }
 
 function validarLogin() {
 
     if (!usuarioEstaLogado()) {
+
+        limparSessao();
+
+        atualizarPermissoes();
 
         alert(
             "Você precisa estar logado."
@@ -180,20 +169,30 @@ function validarLogin() {
     return true;
 }
 
+// Mostra ou esconde o que exige login: seção Administração,
+// link do menu e botão Login.
 function atualizarPermissoes() {
+
+    const logado = usuarioEstaLogado();
 
     const adminSection =
         document.getElementById("admin");
 
-    if (!usuarioEstaLogado()) {
+    if (adminSection) {
+        adminSection.style.display = logado ? "block" : "none";
+    }
 
-        adminSection.style.display =
-            "none";
+    document
+        .querySelectorAll('nav a[href="#admin"]')
+        .forEach(link => {
+            link.style.display = logado ? "" : "none";
+        });
 
-    } else {
+    const botaoLogin =
+        document.querySelector("nav .btn-login");
 
-        adminSection.style.display =
-            "block";
+    if (botaoLogin) {
+        botaoLogin.style.display = logado ? "none" : "";
     }
 }
 
@@ -210,181 +209,44 @@ function salvarStorage() {
 }
 
 
+// Dashboard público: usa só as contagens de /api/Relatorios/dashboard
+// (não baixa as listas de alunos e professores, que exigem login).
 async function atualizarDashboard() {
 
-    const totalAlunos =
-        document.getElementById("totalAlunos");
+    const campos = {
+        totalAlunos: "totalAlunos",
+        totalProfessores: "totalProfessores",
+        totalAulas: "totalAulas",
+        totalNiveis: "totalNiveis"
+    };
 
-    const totalProfessores =
-        document.getElementById("totalProfessores");
-
-    const totalAulas =
-        document.getElementById("totalAulas");
-
-    const totalNiveis =
-        document.getElementById("totalNiveis");
-
-    const contadorAlunos =
-        document.getElementById("contadorAlunos");
-
-    const contadorProfessores =
-        document.getElementById("contadorProfessores");
-
-    const contadorAulas =
-        document.getElementById("contadorAulas");
+    const contadores = {
+        contadorAlunos: ["totalAlunos", "alunos cadastrados"],
+        contadorProfessores: ["totalProfessores", "professores cadastrados"],
+        contadorAulas: ["totalAulas", "aulas cadastradas"]
+    };
 
     try {
 
-        // =========================
-        // BUSCAR AULAS
-        // =========================
-        const responseAulas = await fetch(
-            `${API_URL}/api/Aulas`,
-            {
-                method: "GET",
+        const dados = await api("/api/Relatorios/dashboard", {
+            autenticar: false
+        });
 
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }
-        );
+        Object.entries(campos).forEach(([id, chave]) => {
+            const el = document.getElementById(id);
+            if (el) el.innerText = dados[chave] ?? 0;
+        });
 
-        if (!responseAulas.ok) {
-            throw new Error("Erro ao buscar aulas.");
-        }
-
-        aulasCadastradas =
-            await responseAulas.json();
-
-        // =========================
-        // BUSCAR ALUNOS
-        // =========================
-        const responseAlunos = await fetch(
-            `${API_URL}/api/Alunos?apenasAtivos=true`,
-            {
-                method: "GET",
-
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }
-        );
-
-        if (!responseAlunos.ok) {
-            throw new Error("Erro ao buscar alunos.");
-        }
-
-        alunosCadastrados =
-            await responseAlunos.json();
-
-        // =========================
-        // BUSCAR PROFESSORES
-        // =========================
-        const responseProfessores = await fetch(
-            `${API_URL}/api/Professores?apenasAtivos=true`,
-            {
-                method: "GET",
-
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }
-        );
-
-        if (!responseProfessores.ok) {
-            throw new Error(
-                "Erro ao buscar professores."
-            );
-        }
-
-        professoresCadastrados =
-            await responseProfessores.json();
-
-        // =========================
-        // TOTAL ALUNOS
-        // =========================
-        if (totalAlunos) {
-
-            totalAlunos.innerText =
-                alunosCadastrados.length;
-        }
-
-        // =========================
-        // TOTAL PROFESSORES
-        // =========================
-        if (totalProfessores) {
-
-            totalProfessores.innerText =
-                professoresCadastrados.length;
-        }
-
-        // =========================
-        // TOTAL AULAS
-        // =========================
-        if (totalAulas) {
-
-            totalAulas.innerText =
-                (alunosCadastrados.length * 2) + "h";
-        }
-
-        // =========================
-        // TOTAL NÍVEIS
-        // =========================
-        if (totalNiveis) {
-
-            const niveis = [
-
-                ...new Set(
-                    alunosCadastrados.map(
-                        aluno =>
-                            aluno.nivel ||
-                            aluno.nivelIngles
-                    )
-                )
-
-            ];
-
-            totalNiveis.innerText =
-                niveis.length;
-        }
-
-        // =========================
-        // CONTADOR ALUNOS
-        // =========================
-        if (contadorAlunos) {
-
-            contadorAlunos.innerText =
-                alunosCadastrados.length +
-                " alunos cadastrados";
-        }
-
-        // =========================
-        // CONTADOR PROFESSORES
-        // =========================
-        if (contadorProfessores) {
-
-            contadorProfessores.innerText =
-                professoresCadastrados.length +
-                " professores cadastrados";
-        }
-
-        // =========================
-        // CONTADOR AULAS
-        // =========================
-        if (contadorAulas) {
-
-            contadorAulas.innerText =
-                aulasCadastradas.length +
-                " aulas cadastradas";
-        }
+        Object.entries(contadores).forEach(([id, [chave, texto]]) => {
+            const el = document.getElementById(id);
+            if (el) el.innerText = `${dados[chave] ?? 0} ${texto}`;
+        });
 
     } catch (error) {
 
-        console.error(error);
-
-        alert(
-            "Erro ao atualizar dashboard."
-        );
+        // Sem alerta: a página inicial continua utilizável mesmo
+        // se a API estiver iniciando (Render free) ou fora do ar.
+        console.error(error.message || error);
     }
 }
 
@@ -475,21 +337,10 @@ async function salvarAluno() {
 
     try {
 
-        const response = await fetch(`${API_URL}/api/Alunos`, {
+        await api("/api/Alunos", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(aluno)
+            body: aluno
         });
-
-        if (!response.ok) {
-            throw new Error("Erro ao cadastrar aluno.");
-        }
-
-        const alunoCriado = await response.json();
-
-        console.log("Aluno criado:", alunoCriado);
 
         alert("Aluno cadastrado com sucesso!");
 
@@ -499,9 +350,7 @@ async function salvarAluno() {
 
     } catch (error) {
 
-        console.error(error);
-
-        alert("Erro ao conectar com a API.");
+        mostrarErro(error, "Erro ao cadastrar aluno.");
     }
 }
 
@@ -588,26 +437,10 @@ async function salvarProfessor() {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Professores`,
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify(professor)
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("Erro ao cadastrar professor.");
-        }
-
-        const professorCriado = await response.json();
-
-        console.log("Professor criado:", professorCriado);
+        await api("/api/Professores", {
+            method: "POST",
+            body: professor
+        });
 
         alert("Professor cadastrado com sucesso!");
 
@@ -617,9 +450,7 @@ async function salvarProfessor() {
 
     } catch (error) {
 
-        console.error(error);
-
-        alert("Erro ao conectar com a API.");
+        mostrarErro(error, "Erro ao cadastrar professor.");
     }
 }
 
@@ -628,32 +459,17 @@ async function salvarProfessor() {
 
 async function abrirFormularioAula() {
 
-    const token = localStorage.getItem("token");
+    if (!validarLogin()) {
+        return;
+    }
 
     try {
 
         // =========================
         // BUSCAR PROFESSORES
         // =========================
-        const response = await fetch(
-            `${API_URL}/api/Professores?apenasAtivos=true`,
-            {
-                method: "GET",
-
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(
-                "Erro ao carregar professores."
-            );
-        }
-
-        const professores = await response.json();
+        const professores =
+            await api("/api/Professores?apenasAtivos=true");
 
         // =========================
         // TÍTULO MODAL
@@ -834,9 +650,22 @@ async function abrirFormularioAula() {
 // =========================================
 
 
-function mostrarRelatorio() {
+async function mostrarRelatorio() {
 
     if (!validarLogin()) {
+        return;
+    }
+
+    try {
+
+        [alunosCadastrados, professoresCadastrados] = await Promise.all([
+            api("/api/Alunos?apenasAtivos=true"),
+            api("/api/Professores?apenasAtivos=true")
+        ]);
+
+    } catch (error) {
+
+        mostrarErro(error, "Erro ao carregar o relatório.");
         return;
     }
 
@@ -1133,46 +962,28 @@ async function abrirAdminAlunos() {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Alunos?apenasAtivos=true`,
-            {
-                method: "GET",
-
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("Erro ao buscar alunos.");
-        }
-
         alunosCadastrados =
-            await response.json();
-
-        console.log(
-            "Alunos encontrados:",
-            alunosCadastrados
-        );
+            await api("/api/Alunos?apenasAtivos=true");
 
         renderizarAlunos(alunosCadastrados);
 
     } catch (error) {
 
-        console.error(error);
+        const lista = document.getElementById("listaAdminAlunos");
 
-        document.getElementById(
-            "listaAdminAlunos"
-        ).innerHTML = `
+        if (lista) {
+            lista.innerHTML = `
 
             <p>
                 Erro ao carregar alunos.
             </p>
 
         `;
+        }
 
-        alert("Erro ao conectar com a API.");
+        mostrarErro(error, "Erro ao carregar alunos.");
+
+        if (error.tratado) return;
     }
 
     painel.scrollIntoView({
@@ -1194,24 +1005,7 @@ async function renderizarAlunos(listaRecebida = null) {
         // =====================================
         if (!lista) {
 
-            const response = await fetch(
-                `${API_URL}/api/Alunos?apenasAtivos=true`,
-                {
-                    method: "GET",
-
-                    headers: {
-                        "Accept": "application/json"
-                    }
-                }
-            );
-
-            if (!response.ok) {
-                throw new Error(
-                    "Erro ao buscar alunos."
-                );
-            }
-
-            lista = await response.json();
+            lista = await api("/api/Alunos?apenasAtivos=true");
 
             // atualiza variável global
             alunosCadastrados = lista;
@@ -1471,22 +1265,10 @@ async function salvarEdicaoAluno() {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Alunos/${idEdicao}`,
-            {
-                method: "PUT",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify(alunoAtualizado)
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("Erro ao atualizar aluno.");
-        }
+        await api(`/api/Alunos/${idEdicao}`, {
+            method: "PUT",
+            body: alunoAtualizado
+        });
 
         alert("Aluno atualizado com sucesso!");
 
@@ -1499,9 +1281,7 @@ async function salvarEdicaoAluno() {
 
     } catch (error) {
 
-        console.error(error);
-
-        alert("Erro ao conectar com a API.");
+        mostrarErro(error, "Erro ao atualizar aluno.");
     }
 }
 
@@ -1514,16 +1294,9 @@ async function excluirAluno(id) {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Alunos/${id}`,
-            {
-                method: "DELETE"
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("Erro ao excluir aluno.");
-        }
+        await api(`/api/Alunos/${id}`, {
+            method: "DELETE"
+        });
 
         alert("Aluno excluído com sucesso!");
 
@@ -1533,9 +1306,7 @@ async function excluirAluno(id) {
 
     } catch (error) {
 
-        console.error(error);
-
-        alert("Erro ao conectar com a API.");
+        mostrarErro(error, "Erro ao excluir aluno.");
     }
 }
 
@@ -1575,43 +1346,26 @@ async function abrirAdminProfessores() {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Professores?apenasAtivos=true`,
-            {
-                method: "GET",
-
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("Erro ao buscar professores.");
-        }
-
-        const professoresCadastrados = await response.json();
-
-        console.log(
-            "Professores encontrados:",
-            professoresCadastrados
-        );
+        const professoresCadastrados =
+            await api("/api/Professores?apenasAtivos=true");
 
         renderizarProfessores(professoresCadastrados);
 
     } catch (error) {
 
-        console.error(error);
+        const lista = document.getElementById("listaAdminProfessores");
 
-        document.getElementById(
-            "listaAdminProfessores"
-        ).innerHTML = `
+        if (lista) {
+            lista.innerHTML = `
             <p>
                 Erro ao carregar professores.
             </p>
         `;
+        }
 
-        alert("Erro ao conectar com a API.");
+        mostrarErro(error, "Erro ao carregar professores.");
+
+        if (error.tratado) return;
     }
 
     painel.scrollIntoView({
@@ -1752,24 +1506,7 @@ async function editarProfessor(id) {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Professores/${id}`,
-            {
-                method: "GET",
-
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("Erro ao buscar professor.");
-        }
-
-        const professor = await response.json();
-
-        console.log("Professor encontrado:", professor);
+        const professor = await api(`/api/Professores/${id}`);
 
         document.getElementById("modalTitulo").innerText =
             "Editar Professor";
@@ -1812,9 +1549,7 @@ async function editarProfessor(id) {
 
     } catch (error) {
 
-        console.error(error);
-
-        alert("Erro ao carregar professor.");
+        mostrarErro(error, "Erro ao carregar professor.");
     }
 }
 
@@ -1849,27 +1584,10 @@ async function salvarEdicaoProfessor() {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Professores/${idEdicao}`,
-            {
-                method: "PUT",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify(professorAtualizado)
-            }
-        );
-
-        if (!response.ok) {
-
-            const erro = await response.text();
-
-            console.error("Erro API:", erro);
-
-            throw new Error("Erro ao editar professor.");
-        }
+        await api(`/api/Professores/${idEdicao}`, {
+            method: "PUT",
+            body: professorAtualizado
+        });
 
         alert("Professor atualizado com sucesso!");
 
@@ -1883,9 +1601,7 @@ async function salvarEdicaoProfessor() {
 
     } catch (error) {
 
-        console.error(error);
-
-        alert("Erro ao conectar com a API.");
+        mostrarErro(error, "Erro ao editar professor.");
     }
 }
 
@@ -1902,20 +1618,9 @@ async function excluirProfessor(id) {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Professores/${id}`,
-            {
-                method: "DELETE",
-
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("Erro ao excluir professor.");
-        }
+        await api(`/api/Professores/${id}`, {
+            method: "DELETE"
+        });
 
         alert("Professor excluído com sucesso!");
 
@@ -1925,9 +1630,7 @@ async function excluirProfessor(id) {
 
     } catch (error) {
 
-        console.error(error);
-
-        alert("Erro ao conectar com a API.");
+        mostrarErro(error, "Erro ao excluir professor.");
     }
 }
 
@@ -1973,31 +1676,13 @@ async function renderizarAulas() {
     const div =
         document.getElementById("listaAulas");
 
-    const token =
-        localStorage.getItem("token");
+    // Painel de aulas fechado: nada para redesenhar.
+    if (!div) return;
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Aulas`,
-            {
-                method: "GET",
-
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(
-                "Erro ao buscar aulas."
-            );
-        }
-
         const lista =
-            await response.json();
+            await api("/api/Aulas");
 
         aulasCadastradas = lista;
 
@@ -2117,45 +1802,26 @@ async function renderizarAulas() {
 
     } catch (error) {
 
-        console.error(error);
-
-        div.innerHTML = `
+        if (div) {
+            div.innerHTML = `
 
             <p>
                 Erro ao carregar aulas.
             </p>
 
         `;
+        }
+
+        mostrarErro(error, "Erro ao carregar aulas.");
     }
 }
 
 async function editarAula(id) {
 
-    const token =
-        localStorage.getItem("token");
-
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Aulas/${id}`,
-            {
-                method: "GET",
-
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(
-                "Erro ao buscar aula."
-            );
-        }
-
         const aula =
-            await response.json();
+            await api(`/api/Aulas/${id}`);
 
         tipoEdicao = "aula";
 
@@ -2241,11 +1907,7 @@ async function editarAula(id) {
 
     } catch (error) {
 
-        console.error(error);
-
-        alert(
-            "Erro ao carregar aula."
-        );
+        mostrarErro(error, "Erro ao carregar aula.");
     }
 }
 
@@ -2257,38 +1919,21 @@ async function excluirAula(id) {
 
     if (!confirmar) return;
 
-    const token = localStorage.getItem("token");
-
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Aulas/${id}`,
-            {
-                method: "DELETE",
-
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error("Erro ao excluir aula.");
-        }
+        await api(`/api/Aulas/${id}`, {
+            method: "DELETE"
+        });
 
         abrirAdminAulas();
 
     } catch (error) {
 
-        console.error(error);
-
-        alert("Erro ao excluir aula.");
+        mostrarErro(error, "Erro ao excluir aula.");
     }
 }
 
 async function inscreverAluno(aulaId) {
-
-    const token = localStorage.getItem("token");
 
     const alunoId =
         document.getElementById("novoAlunoAula").value;
@@ -2301,30 +1946,10 @@ async function inscreverAluno(aulaId) {
 
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Aulas/inscrever`,
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-
-                body: JSON.stringify({
-                    alunoId,
-                    aulaId
-                })
-            }
-        );
-
-        const data = await response.json();
-
-        if (!response.ok) {
-
-            alert(data.message);
-            return;
-        }
+        const data = await api("/api/Aulas/inscrever", {
+            method: "POST",
+            body: { alunoId, aulaId }
+        });
 
         alert(data.message);
 
@@ -2334,11 +1959,7 @@ async function inscreverAluno(aulaId) {
 
     } catch (error) {
 
-        console.error(error);
-
-        alert(
-            "Erro ao inscrever aluno."
-        );
+        mostrarErro(error, "Erro ao inscrever aluno.");
     }
 }
 
@@ -2348,29 +1969,12 @@ async function registrarPresenca(
     presenca
 ) {
 
-    const token = localStorage.getItem("token");
-
     try {
 
-        const response = await fetch(
-            `${API_URL}/api/Aulas/presenca`,
-            {
-                method: "PUT",
-
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-
-                body: JSON.stringify({
-                    aulaId,
-                    alunoId,
-                    presenca
-                })
-            }
-        );
-
-        const data = await response.json();
+        const data = await api("/api/Aulas/presenca", {
+            method: "PUT",
+            body: { aulaId, alunoId, presenca }
+        });
 
         alert(data.message);
 
@@ -2378,52 +1982,19 @@ async function registrarPresenca(
 
     } catch (error) {
 
-        console.error(error);
-
-        alert("Erro ao registrar presença.");
+        mostrarErro(error, "Erro ao registrar presença.");
     }
 }
 
 async function abrirAlunosAula(aulaId) {
 
-    const token = localStorage.getItem("token");
-
     try {
 
-        // =========================
-        // BUSCAR ALUNOS INSCRITOS
-        // =========================
-        const response = await fetch(
-            `${API_URL}/api/Aulas/${aulaId}/alunos`,
-            {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }
-        );
-
-        if (!response.ok) {
-            throw new Error(
-                "Erro ao carregar alunos."
-            );
-        }
-
-        const alunos = await response.json();
-
-        // =========================
-        // BUSCAR TODOS OS ALUNOS
-        // =========================
-        const responseTodos = await fetch(
-            `${API_URL}/api/Alunos?apenasAtivos=true`,
-            {
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
-            }
-        );
-
-        const todosAlunos =
-            await responseTodos.json();
+        // inscritos na aula + todos os alunos (para o select)
+        const [alunos, todosAlunos] = await Promise.all([
+            api(`/api/Aulas/${aulaId}/alunos`),
+            api("/api/Alunos?apenasAtivos=true")
+        ]);
 
         // =========================
         // MODAL
@@ -2549,11 +2120,7 @@ async function abrirAlunosAula(aulaId) {
 
     } catch (error) {
 
-        console.error(error);
-
-        alert(
-            "Erro ao carregar alunos da aula."
-        );
+        mostrarErro(error, "Erro ao carregar alunos da aula.");
     }
 }
 
@@ -2652,32 +2219,10 @@ async function salvarEdicao() {
 
         try {
 
-            const response = await fetch(
-                `${API_URL}/api/Professores/${idEdicao}`,
-                {
-                    method: "PUT",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify(
-                        professorAtualizado
-                    )
-                }
-            );
-
-            if (!response.ok) {
-
-                const erro =
-                    await response.text();
-
-                console.error("Erro API:", erro);
-
-                throw new Error(
-                    "Erro ao atualizar professor."
-                );
-            }
+            await api(`/api/Professores/${idEdicao}`, {
+                method: "PUT",
+                body: professorAtualizado
+            });
 
             alert(
                 "Professor atualizado com sucesso!"
@@ -2691,11 +2236,7 @@ async function salvarEdicao() {
 
         } catch (error) {
 
-            console.error(error);
-
-            alert(
-                "Erro ao conectar com a API."
-            );
+            mostrarErro(error, "Erro ao atualizar professor.");
         }
 
         return;
@@ -2708,9 +2249,6 @@ async function salvarEdicao() {
         tipoEdicao === "novaAula" ||
         tipoEdicao === "aula"
     ) {
-
-        const token =
-            localStorage.getItem("token");
 
         const body = {
 
@@ -2773,42 +2311,10 @@ async function salvarEdicao() {
                 idEdicao === null
             ) {
 
-                console.log(
-                    "CRIANDO AULA:",
+                await api("/api/Aulas", {
+                    method: "POST",
                     body
-                );
-
-                const response = await fetch(
-                    `${API_URL}/api/Aulas`,
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json",
-
-                            "Authorization":
-                                `Bearer ${token}`
-                        },
-
-                        body: JSON.stringify(body)
-                    }
-                );
-
-                if (!response.ok) {
-
-                    const erro =
-                        await response.text();
-
-                    console.error(
-                        "ERRO API:",
-                        erro
-                    );
-
-                    throw new Error(
-                        "Erro ao criar aula."
-                    );
-                }
+                });
 
                 alert(
                     "Aula criada com sucesso!"
@@ -2820,42 +2326,10 @@ async function salvarEdicao() {
             // =========================
             else {
 
-                console.log(
-                    "EDITANDO AULA:",
+                await api(`/api/Aulas/${idEdicao}`, {
+                    method: "PUT",
                     body
-                );
-
-                const response = await fetch(
-                    `${API_URL}/api/Aulas/${idEdicao}`,
-                    {
-                        method: "PUT",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json",
-
-                            "Authorization":
-                                `Bearer ${token}`
-                        },
-
-                        body: JSON.stringify(body)
-                    }
-                );
-
-                if (!response.ok) {
-
-                    const erro =
-                        await response.text();
-
-                    console.error(
-                        "ERRO API:",
-                        erro
-                    );
-
-                    throw new Error(
-                        "Erro ao atualizar aula."
-                    );
-                }
+                });
 
                 alert(
                     "Aula atualizada com sucesso!"
@@ -2870,9 +2344,7 @@ async function salvarEdicao() {
 
         } catch (error) {
 
-            console.error(error);
-
-            alert("Erro ao salvar aula.");
+            mostrarErro(error, "Erro ao salvar aula.");
         }
 
         return;
@@ -3424,8 +2896,15 @@ document.getElementById("formContato").addEventListener(
 // =========================================
 
 
-atualizarDashboard();
+// Token vencido de uma visita anterior: encerra a sessão em silêncio.
+if (localStorage.getItem("token") && !usuarioEstaLogado()) {
+    limparSessao();
+}
+
+atualizarPermissoes();
 
 atualizarUsuarioLogado();
+
+atualizarDashboard();
 
 

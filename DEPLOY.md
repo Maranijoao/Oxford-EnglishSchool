@@ -45,7 +45,9 @@ flowchart LR
    - `Jwt__Key` é gerada automaticamente e `Seed__DadosExemplo` já vem `true`.
 5. Aguarde o build. Teste:
    - `https://oxford-api.onrender.com/health` → `Healthy`
-   - `https://oxford-api.onrender.com/swagger` → documentação da API
+   - `https://oxford-api.onrender.com/api/Relatorios/dashboard` → contagens públicas
+   - O Swagger (`/swagger`) só existe ao rodar a API em Development (local).
+   - Todas as outras rotas exigem login (`Authorization: Bearer <token>`); sem token → 401.
 6. Se o Render atribuir outra URL (nome já usado), atualize `API_URL_PRODUCAO` em
    `Front-End Oxford/js/config.js`.
 
