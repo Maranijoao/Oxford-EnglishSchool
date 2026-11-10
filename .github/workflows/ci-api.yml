@@ -1,0 +1,32 @@
+# CI da API: compila o projeto .NET e a imagem Docker a cada push/PR.
+# O deploy (CD) é feito pelo Render, que observa a branch master.
+name: CI - API
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "Oxford EnglishSchool/**"
+      - "Dockerfile"
+      - ".github/workflows/ci-api.yml"
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore
+        run: dotnet restore "Oxford EnglishSchool/Oxford EnglishSchool/Oxford EnglishSchool.csproj"
+
+      - name: Build
+        run: dotnet build "Oxford EnglishSchool/Oxford EnglishSchool/Oxford EnglishSchool.csproj" -c Release --no-restore
+
+      - name: Docker build
+        run: docker build -t oxford-api:${{ github.sha }} .

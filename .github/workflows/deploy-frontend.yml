@@ -1,0 +1,38 @@
+# CD do front-end (PWA): publica a pasta "Front-End Oxford" no GitHub Pages.
+# Pré-requisito único: Settings > Pages > Source = "GitHub Actions".
+name: Deploy - Front-end (GitHub Pages)
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "Front-End Oxford/**"
+      - ".github/workflows/deploy-frontend.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: "Front-End Oxford"
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -54,7 +54,7 @@ async function realizarLogin() {
     try {
 
         const response = await fetch(
-            "https://localhost:7131/api/Auth/login",
+            `${API_URL}/api/Auth/login`,
             {
                 method: "POST",
 
@@ -239,7 +239,7 @@ async function atualizarDashboard() {
         // BUSCAR AULAS
         // =========================
         const responseAulas = await fetch(
-            "https://localhost:7131/api/Aulas",
+            `${API_URL}/api/Aulas`,
             {
                 method: "GET",
 
@@ -260,7 +260,7 @@ async function atualizarDashboard() {
         // BUSCAR ALUNOS
         // =========================
         const responseAlunos = await fetch(
-            "https://localhost:7131/api/Alunos?apenasAtivos=true",
+            `${API_URL}/api/Alunos?apenasAtivos=true`,
             {
                 method: "GET",
 
@@ -281,7 +281,7 @@ async function atualizarDashboard() {
         // BUSCAR PROFESSORES
         // =========================
         const responseProfessores = await fetch(
-            "https://localhost:7131/api/Professores?apenasAtivos=true",
+            `${API_URL}/api/Professores?apenasAtivos=true`,
             {
                 method: "GET",
 
@@ -475,7 +475,7 @@ async function salvarAluno() {
 
     try {
 
-        const response = await fetch("https://localhost:7131/api/Alunos", {
+        const response = await fetch(`${API_URL}/api/Alunos`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -589,7 +589,7 @@ async function salvarProfessor() {
     try {
 
         const response = await fetch(
-            "https://localhost:7131/api/Professores",
+            `${API_URL}/api/Professores`,
             {
                 method: "POST",
 
@@ -636,7 +636,7 @@ async function abrirFormularioAula() {
         // BUSCAR PROFESSORES
         // =========================
         const response = await fetch(
-            "https://localhost:7131/api/Professores?apenasAtivos=true",
+            `${API_URL}/api/Professores?apenasAtivos=true`,
             {
                 method: "GET",
 
@@ -1134,7 +1134,7 @@ async function abrirAdminAlunos() {
     try {
 
         const response = await fetch(
-            "https://localhost:7131/api/Alunos?apenasAtivos=true",
+            `${API_URL}/api/Alunos?apenasAtivos=true`,
             {
                 method: "GET",
 
@@ -1195,7 +1195,7 @@ async function renderizarAlunos(listaRecebida = null) {
         if (!lista) {
 
             const response = await fetch(
-                "https://localhost:7131/api/Alunos?apenasAtivos=true",
+                `${API_URL}/api/Alunos?apenasAtivos=true`,
                 {
                     method: "GET",
 
@@ -1472,7 +1472,7 @@ async function salvarEdicaoAluno() {
     try {
 
         const response = await fetch(
-            `https://localhost:7131/api/Alunos/${idEdicao}`,
+            `${API_URL}/api/Alunos/${idEdicao}`,
             {
                 method: "PUT",
 
@@ -1515,7 +1515,7 @@ async function excluirAluno(id) {
     try {
 
         const response = await fetch(
-            `https://localhost:7131/api/Alunos/${id}`,
+            `${API_URL}/api/Alunos/${id}`,
             {
                 method: "DELETE"
             }
@@ -1576,7 +1576,7 @@ async function abrirAdminProfessores() {
     try {
 
         const response = await fetch(
-            "https://localhost:7131/api/Professores?apenasAtivos=true",
+            `${API_URL}/api/Professores?apenasAtivos=true`,
             {
                 method: "GET",
 
@@ -1753,7 +1753,7 @@ async function editarProfessor(id) {
     try {
 
         const response = await fetch(
-            `https://localhost:7131/api/Professores/${id}`,
+            `${API_URL}/api/Professores/${id}`,
             {
                 method: "GET",
 
@@ -1850,7 +1850,7 @@ async function salvarEdicaoProfessor() {
     try {
 
         const response = await fetch(
-            `https://localhost:7131/api/Professores/${idEdicao}`,
+            `${API_URL}/api/Professores/${idEdicao}`,
             {
                 method: "PUT",
 
@@ -1903,7 +1903,7 @@ async function excluirProfessor(id) {
     try {
 
         const response = await fetch(
-            `https://localhost:7131/api/Professores/${id}`,
+            `${API_URL}/api/Professores/${id}`,
             {
                 method: "DELETE",
 
@@ -1979,7 +1979,7 @@ async function renderizarAulas() {
     try {
 
         const response = await fetch(
-            "https://localhost:7131/api/Aulas",
+            `${API_URL}/api/Aulas`,
             {
                 method: "GET",
 
@@ -2137,7 +2137,7 @@ async function editarAula(id) {
     try {
 
         const response = await fetch(
-            `https://localhost:7131/api/Aulas/${id}`,
+            `${API_URL}/api/Aulas/${id}`,
             {
                 method: "GET",
 
@@ -2262,7 +2262,7 @@ async function excluirAula(id) {
     try {
 
         const response = await fetch(
-            `https://localhost:7131/api/Aulas/${id}`,
+            `${API_URL}/api/Aulas/${id}`,
             {
                 method: "DELETE",
 
@@ -2302,7 +2302,7 @@ async function inscreverAluno(aulaId) {
     try {
 
         const response = await fetch(
-            "https://localhost:7131/api/Aulas/inscrever",
+            `${API_URL}/api/Aulas/inscrever`,
             {
                 method: "POST",
 
@@ -2353,7 +2353,7 @@ async function registrarPresenca(
     try {
 
         const response = await fetch(
-            "https://localhost:7131/api/Aulas/presenca",
+            `${API_URL}/api/Aulas/presenca`,
             {
                 method: "PUT",
 
@@ -2394,7 +2394,7 @@ async function abrirAlunosAula(aulaId) {
         // BUSCAR ALUNOS INSCRITOS
         // =========================
         const response = await fetch(
-            `https://localhost:7131/api/Aulas/${aulaId}/alunos`,
+            `${API_URL}/api/Aulas/${aulaId}/alunos`,
             {
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -2414,7 +2414,7 @@ async function abrirAlunosAula(aulaId) {
         // BUSCAR TODOS OS ALUNOS
         // =========================
         const responseTodos = await fetch(
-            "https://localhost:7131/api/Alunos?apenasAtivos=true",
+            `${API_URL}/api/Alunos?apenasAtivos=true`,
             {
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -2653,7 +2653,7 @@ async function salvarEdicao() {
         try {
 
             const response = await fetch(
-                `https://localhost:7131/api/Professores/${idEdicao}`,
+                `${API_URL}/api/Professores/${idEdicao}`,
                 {
                     method: "PUT",
 
@@ -2779,7 +2779,7 @@ async function salvarEdicao() {
                 );
 
                 const response = await fetch(
-                    "https://localhost:7131/api/Aulas",
+                    `${API_URL}/api/Aulas`,
                     {
                         method: "POST",
 
@@ -2826,7 +2826,7 @@ async function salvarEdicao() {
                 );
 
                 const response = await fetch(
-                    `https://localhost:7131/api/Aulas/${idEdicao}`,
+                    `${API_URL}/api/Aulas/${idEdicao}`,
                     {
                         method: "PUT",
 

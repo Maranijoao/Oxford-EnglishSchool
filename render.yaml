@@ -1,0 +1,29 @@
+# Blueprint do Render (https://render.com) — plano gratuito.
+# No painel: New > Blueprint > selecione este repositório.
+#
+# Banco: SQLite dentro do container (/app/data/oxford.db).
+# ATENÇÃO: no plano free o disco é efêmero — o arquivo é recriado
+# a cada deploy/reinício (o serviço hiberna após ~15 min sem acesso).
+# Por isso a API recria as tabelas, o admin e os dados de exemplo
+# automaticamente ao subir.
+services:
+  - type: web
+    name: oxford-api
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeploy: true            # CD: cada push na branch faz novo deploy
+    envVars:
+      - key: Jwt__Key
+        generateValue: true     # Render gera uma chave aleatória
+      - key: Admin__Email
+        sync: false             # e-mail de login do administrador
+      - key: Admin__Senha
+        sync: false             # senha do administrador (segredo)
+      - key: Seed__DadosExemplo
+        value: "true"           # popula professores/alunos/aulas de exemplo
+      - key: Cors__AllowedOrigins
+        sync: false             # ex.: https://SEU-USUARIO.github.io

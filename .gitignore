@@ -1,0 +1,15 @@
+## .NET / Visual Studio
+bin/
+obj/
+.vs/
+*.user
+*.Backup.tmp
+
+## Segredos locais
+.env
+appsettings.*.local.json
+
+## Banco SQLite local
+*.db
+*.db-shm
+*.db-wal

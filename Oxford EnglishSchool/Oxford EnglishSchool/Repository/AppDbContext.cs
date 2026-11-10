@@ -20,7 +20,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Professor>(e =>
         {
             e.HasKey(p => p.Id);
-            e.Property(p => p.Id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            e.Property(p => p.Id).ValueGeneratedOnAdd();
             e.HasIndex(p => p.Email).IsUnique();
 
             e.Property(p => p.Nome).HasMaxLength(100).IsRequired();
@@ -33,7 +33,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Aluno>(e =>
         {
             e.HasKey(a => a.Id);
-            e.Property(a => a.Id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            e.Property(a => a.Id).ValueGeneratedOnAdd();
             e.HasIndex(a => a.Email).IsUnique();
 
             e.Property(a => a.Nome).HasMaxLength(100).IsRequired();
@@ -47,7 +47,7 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Aula>(e =>
         {
             e.HasKey(a => a.Id);
-            e.Property(a => a.Id).HasDefaultValueSql("NEWSEQUENTIALID()");
+            e.Property(a => a.Id).ValueGeneratedOnAdd();
 
             e.Property(a => a.Titulo).HasMaxLength(100).IsRequired();
             e.Property(a => a.Descricao).HasMaxLength(255);

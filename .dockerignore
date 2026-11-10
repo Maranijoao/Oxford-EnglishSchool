@@ -1,0 +1,13 @@
+**/bin/
+**/obj/
+**/.vs/
+**/*.user
+**/*.Backup.tmp
+.git/
+.github/
+Front-End Oxford/
+database/
+docs/
+**/*.db
+**/*.db-shm
+**/*.db-wal
