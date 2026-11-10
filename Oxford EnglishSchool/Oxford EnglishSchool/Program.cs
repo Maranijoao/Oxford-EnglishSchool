@@ -56,7 +56,10 @@ builder.Services.AddSwaggerGen(c =>
 // Cors:AllowedOrigins (lista separada por vírgula) restringe as origens
 // em produção; se não for definido, qualquer origem é aceita.
 var allowedOrigins = (builder.Configuration["Cors:AllowedOrigins"] ?? "")
-    .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+    // O navegador envia a origem sem "/" final; aceita a config com ou sem.
+    .Select(o => o.TrimEnd('/'))
+    .ToArray();
 
 builder.Services.AddCors(opt =>
     opt.AddPolicy(
