@@ -7,7 +7,7 @@
 // ─────────────────────────────────────────────────────────────
 
 const API_URL_LOCAL = "https://localhost:7131";
-const API_URL_PRODUCAO = "https://oxford-api.onrender.com";
+const API_URL_PRODUCAO = "https://oxford-api-ivvx.onrender.com";
 
 const API_URL = ["localhost", "127.0.0.1"].includes(location.hostname)
     ? API_URL_LOCAL
