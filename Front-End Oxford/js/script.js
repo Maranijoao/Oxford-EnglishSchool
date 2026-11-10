@@ -2141,42 +2141,7 @@ async function salvarEdicao() {
     // =========================
     if (tipoEdicao === "aluno") {
 
-        alunosCadastrados =
-            alunosCadastrados.map(aluno => {
-
-                if (aluno.id === idEdicao) {
-
-                    return {
-
-                        id: aluno.id,
-
-                        nome:
-                            document.getElementById("editNome").value,
-
-                        email:
-                            document.getElementById("editEmail").value,
-
-                        telefone:
-                            document.getElementById("editTelefone").value,
-
-                        idade:
-                            document.getElementById("editIdade").value,
-
-                        nivel:
-                            document.getElementById("editNivel").value
-                    };
-                }
-
-                return aluno;
-            });
-
-        salvarStorage();
-
-        atualizarDashboard();
-
-        abrirAdminAlunos();
-
-        fecharModal();
+        await salvarEdicaoAluno();
 
         return;
     }

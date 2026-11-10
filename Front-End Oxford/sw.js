@@ -11,7 +11,7 @@
 // Ao alterar arquivos do app, incremente VERSION.
 // ─────────────────────────────────────────────────────────────
 
-const VERSION = "v5";
+const VERSION = "v6";
 const SHELL_CACHE = `oxford-shell-${VERSION}`;
 const API_CACHE = `oxford-api-${VERSION}`;
 const CDN_CACHE = `oxford-cdn-${VERSION}`;
