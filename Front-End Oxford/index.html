@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
     <title>
         Oxford English School
@@ -38,9 +38,14 @@
             Oxford <span>English</span> School
         </div>
 
+        <!-- MENU MOBILE -->
+        <button class="menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="menuPrincipal" onclick="alternarMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
         <div id="usuarioLogado" class="usuario-logado"></div>
 
-        <nav>
+        <nav id="menuPrincipal">
 
             <a href="#inicio">
                 Início
@@ -85,10 +90,6 @@
             </button>
 
         </nav>
-
-        <!-- USUÁRIO LOGADO -->
-        <div id="usuarioLogado" class="usuario-logado">
-        </div>
 
     </header>
 
@@ -660,6 +661,7 @@
     <script src="js/config.js"></script>
     <script src="js/script.js"></script>
     <script src="js/pwa.js"></script>
+    <script src="js/mobile.js"></script>
 
     <!-- VLIBRAS -->
     <div vw class="enabled">

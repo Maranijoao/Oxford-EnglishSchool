@@ -11,7 +11,7 @@
 // Ao alterar arquivos do app, incremente VERSION.
 // ─────────────────────────────────────────────────────────────
 
-const VERSION = "v2";
+const VERSION = "v3";
 const SHELL_CACHE = `oxford-shell-${VERSION}`;
 const API_CACHE = `oxford-api-${VERSION}`;
 const CDN_CACHE = `oxford-cdn-${VERSION}`;
@@ -24,6 +24,7 @@ const SHELL_FILES = [
     "./js/config.js",
     "./js/script.js",
     "./js/pwa.js",
+    "./js/mobile.js",
     "./manifest.webmanifest",
     "./icons/icon-192.png",
     "./icons/icon-512.png",
