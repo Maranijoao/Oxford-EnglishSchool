@@ -22,10 +22,52 @@ class ErroApi extends Error {
     }
 }
 
+// ── HTML seguro ───────────────────────────────────────────────
+
+// Escapa um valor antes de interpolá-lo em HTML (texto ou atributo).
+// Todo dado vindo da API passa por aqui.
+function escapeHtml(valor) {
+    if (valor === null || valor === undefined) return "";
+    return String(valor)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+// ── localStorage protegido ────────────────────────────────────
+// Em navegação privada ou com armazenamento bloqueado, o acesso
+// pode lançar exceção: nesses casos o app segue sem sessão salva.
+
+function lerStorage(chave) {
+    try {
+        return localStorage.getItem(chave);
+    } catch {
+        return null;
+    }
+}
+
+function gravarStorage(chave, valor) {
+    try {
+        localStorage.setItem(chave, valor);
+    } catch {
+        // sem armazenamento: ignora
+    }
+}
+
+function removerStorage(chave) {
+    try {
+        localStorage.removeItem(chave);
+    } catch {
+        // sem armazenamento: ignora
+    }
+}
+
 // ── Sessão ────────────────────────────────────────────────────
 
 function obterToken() {
-    return localStorage.getItem("token");
+    return lerStorage("token");
 }
 
 // Lê o "exp" do JWT. Serve só para a interface: quem garante
@@ -44,9 +86,9 @@ function tokenValido() {
 }
 
 function limparSessao() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("usuarioNome");
-    localStorage.removeItem("usuarioEmail");
+    removerStorage("token");
+    removerStorage("usuarioNome");
+    removerStorage("usuarioEmail");
 }
 
 let avisoSessaoMostrado = false;

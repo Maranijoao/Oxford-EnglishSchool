@@ -4,14 +4,17 @@
 // Estratégias:
 //  • App shell (HTML/CSS/JS/ícones): pré-cache na instalação,
 //    servido do cache e atualizado em segundo plano.
-//  • GET na API: network-first; sem rede, devolve a última
-//    resposta salva (consulta offline de alunos/aulas/dashboard).
+//  • GET na API sem login (só o dashboard público): network-first;
+//    sem rede, devolve a última resposta salva.
+//  • GET na API com "Authorization": sempre na rede e NUNCA salvo
+//    no cache, para que listas com dados pessoais não fiquem no
+//    aparelho depois do logout.
 //  • POST/PUT/DELETE: sempre direto na rede (nunca cacheados).
 //  • CDNs (Font Awesome etc.): stale-while-revalidate.
 // Ao alterar arquivos do app, incremente VERSION.
 // ─────────────────────────────────────────────────────────────
 
-const VERSION = "v7";
+const VERSION = "v8";
 const SHELL_CACHE = `oxford-shell-${VERSION}`;
 const API_CACHE = `oxford-api-${VERSION}`;
 const CDN_CACHE = `oxford-cdn-${VERSION}`;
@@ -59,7 +62,11 @@ self.addEventListener("fetch", (event) => {
     const url = new URL(req.url);
 
     if (url.pathname.includes("/api/")) {
-        event.respondWith(networkFirst(req));
+        if (req.headers.has("Authorization")) {
+            event.respondWith(somenteRede(req));
+        } else {
+            event.respondWith(networkFirst(req));
+        }
         return;
     }
 
@@ -88,6 +95,18 @@ async function networkFirst(req) {
         if (salvo) return salvo;
         return new Response(
             JSON.stringify({ message: "Sem conexão e sem dados salvos para esta consulta." }),
+            { status: 503, headers: { "Content-Type": "application/json" } }
+        );
+    }
+}
+
+// Rotas autenticadas: vai à rede e não guarda nada.
+async function somenteRede(req) {
+    try {
+        return await fetch(req);
+    } catch (err) {
+        return new Response(
+            JSON.stringify({ message: "Sem conexão. Esta consulta precisa de internet." }),
             { status: 503, headers: { "Content-Type": "application/json" } }
         );
     }

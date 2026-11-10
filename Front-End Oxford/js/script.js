@@ -62,20 +62,11 @@ async function realizarLogin() {
         });
 
         // TOKEN
-        localStorage.setItem(
-            "token",
-            data.token
-        );
+        gravarStorage("token", data.token);
 
-        localStorage.setItem(
-            "usuarioNome",
-            data.nome
-        );
+        gravarStorage("usuarioNome", data.nome);
 
-        localStorage.setItem(
-            "usuarioEmail",
-            data.email
-        );
+        gravarStorage("usuarioEmail", data.email);
 
         avisoSessaoMostrado = false;
 
@@ -99,10 +90,7 @@ async function realizarLogin() {
 
 function atualizarUsuarioLogado() {
 
-    const nome =
-        localStorage.getItem(
-            "usuarioNome"
-        );
+    const nome = lerStorage("usuarioNome");
 
     const div =
         document.getElementById(
@@ -512,9 +500,9 @@ async function abrirFormularioAula() {
 
                         ${professores.map(professor => `
 
-                            <option value="${professor.id}">
+                            <option value="${escapeHtml(professor.id)}">
 
-                                ${professor.nome}
+                                ${escapeHtml(professor.nome)}
 
                             </option>
 
@@ -697,27 +685,27 @@ async function mostrarRelatorio() {
 
             html += `
                 <p>
-                    <strong>Nome:</strong> ${aluno.nome}
+                    <strong>Nome:</strong> ${escapeHtml(aluno.nome)}
                 </p>
 
 
                 <p>
-                    <strong>Email:</strong> ${aluno.email}
+                    <strong>Email:</strong> ${escapeHtml(aluno.email)}
                 </p>
 
 
                 <p>
-                    <strong>Telefone:</strong> ${aluno.telefone}
+                    <strong>Telefone:</strong> ${escapeHtml(aluno.telefone)}
                 </p>
 
 
                 <p>
-                    <strong>Idade:</strong> ${aluno.idade}
+                    <strong>Idade:</strong> ${escapeHtml(aluno.idade)}
                 </p>
 
 
                 <p>
-                    <strong>Nível:</strong> ${aluno.nivel}
+                    <strong>Nível:</strong> ${escapeHtml(aluno.nivel)}
                 </p>
 
 
@@ -742,27 +730,27 @@ async function mostrarRelatorio() {
 
             html += `
                 <p>
-                    <strong>Nome:</strong> ${professor.nome}
+                    <strong>Nome:</strong> ${escapeHtml(professor.nome)}
                 </p>
 
 
                 <p>
-                    <strong>Email:</strong> ${professor.email}
+                    <strong>Email:</strong> ${escapeHtml(professor.email)}
                 </p>
 
 
                 <p>
-                    <strong>Telefone:</strong> ${professor.telefone}
+                    <strong>Telefone:</strong> ${escapeHtml(professor.telefone)}
                 </p>
 
 
                 <p>
-                    <strong>Especialidade:</strong> ${professor.especialidade}
+                    <strong>Especialidade:</strong> ${escapeHtml(professor.especialidade)}
                 </p>
 
 
                 <p>
-                    <strong>Horário:</strong> ${professor.horario}
+                    <strong>Horário:</strong> ${escapeHtml(professor.horario)}
                 </p>
 
 
@@ -919,7 +907,7 @@ function mostrarDashboard(texto) {
 
 
         <p>
-            ${texto}
+            ${escapeHtml(texto)}
         </p>
 
 
@@ -1065,35 +1053,36 @@ async function renderizarAlunos(listaRecebida = null) {
                     <tr>
 
                         <td>
-                            ${aluno.nome || "-"}
+                            ${escapeHtml(aluno.nome || "-")}
                         </td>
 
                         <td>
-                            ${aluno.email || "-"}
+                            ${escapeHtml(aluno.email || "-")}
                         </td>
 
                         <td>
-                            ${aluno.telefone || "-"}
+                            ${escapeHtml(aluno.telefone || "-")}
                         </td>
 
                         <td>
                             ${aluno.dataNascimento
-                ? formatarData(
+                ? escapeHtml(formatarData(
                     aluno.dataNascimento
-                )
+                ))
                 : "-"
             }
                         </td>
 
                         <td>
-                            ${aluno.nivelIngles || "-"}
+                            ${escapeHtml(aluno.nivelIngles || "-")}
                         </td>
 
                         <td>
 
                             <button
                                 class="btn-edit"
-                                onclick='editarAluno(${JSON.stringify(aluno)})'
+                                data-id="${escapeHtml(aluno.id)}"
+                                onclick="editarAluno(this.dataset.id)"
                             >
 
                                 Editar
@@ -1102,7 +1091,8 @@ async function renderizarAlunos(listaRecebida = null) {
 
                             <button
                                 class="btn-delete"
-                                onclick="excluirAluno('${aluno.id}')"
+                                data-id="${escapeHtml(aluno.id)}"
+                                onclick="excluirAluno(this.dataset.id)"
                             >
 
                                 Excluir
@@ -1183,7 +1173,24 @@ function filtrarAlunos(texto) {
 
 let alunoEmEdicao = null;
 
-function editarAluno(aluno) {
+// Recebe só o id: procura o aluno na lista já carregada e,
+// se não estiver lá, busca na API.
+async function editarAluno(id) {
+
+    let aluno = alunosCadastrados.find(a => a.id === id);
+
+    if (!aluno) {
+
+        try {
+
+            aluno = await api(`/api/Alunos/${encodeURIComponent(id)}`);
+
+        } catch (error) {
+
+            mostrarErro(error, "Erro ao carregar aluno.");
+            return;
+        }
+    }
 
     tipoEdicao = "aluno";
 
@@ -1199,21 +1206,21 @@ function editarAluno(aluno) {
         <input
             id="editNome"
             type="text"
-            value="${aluno.nome}"
+            value="${escapeHtml(aluno.nome)}"
             placeholder="Nome"
         >
 
         <input
             id="editEmail"
             type="email"
-            value="${aluno.email}"
+            value="${escapeHtml(aluno.email)}"
             placeholder="E-mail"
         >
 
         <input
             id="editTelefone"
             type="text"
-            value="${aluno.telefone}"
+            value="${escapeHtml(aluno.telefone)}"
             placeholder="Telefone"
         >
 
@@ -1221,14 +1228,14 @@ function editarAluno(aluno) {
             id="editDataNascimento"
             type="date"
             value="${aluno.dataNascimento
-            ? aluno.dataNascimento.split('T')[0]
+            ? escapeHtml(aluno.dataNascimento.split('T')[0])
             : ''}"
         >
 
         <input
             id="editNivel"
             type="text"
-            value="${aluno.nivelIngles}"
+            value="${escapeHtml(aluno.nivelIngles)}"
             placeholder="Nível"
         >
 
@@ -1265,7 +1272,7 @@ async function salvarEdicaoAluno() {
 
     try {
 
-        await api(`/api/Alunos/${idEdicao}`, {
+        await api(`/api/Alunos/${encodeURIComponent(idEdicao)}`, {
             method: "PUT",
             body: alunoAtualizado
         });
@@ -1294,7 +1301,7 @@ async function excluirAluno(id) {
 
     try {
 
-        await api(`/api/Alunos/${id}`, {
+        await api(`/api/Alunos/${encodeURIComponent(id)}`, {
             method: "DELETE"
         });
 
@@ -1425,16 +1432,16 @@ function renderizarProfessores(lista) {
                 <tr>
 
 
-                    <td>${professor.nome}</td>
+                    <td>${escapeHtml(professor.nome)}</td>
 
 
-                    <td>${professor.email}</td>
+                    <td>${escapeHtml(professor.email)}</td>
 
 
-                    <td>${professor.telefone}</td>
+                    <td>${escapeHtml(professor.telefone)}</td>
 
 
-                    <td>${professor.especialidade}</td>
+                    <td>${escapeHtml(professor.especialidade)}</td>
 
 
                     <td>
@@ -1442,7 +1449,8 @@ function renderizarProfessores(lista) {
 
                         <button
                         class="btn-edit"
-                        onclick="editarProfessor('${professor.id}')">
+                        data-id="${escapeHtml(professor.id)}"
+                        onclick="editarProfessor(this.dataset.id)">
 
 
                             Editar
@@ -1453,7 +1461,8 @@ function renderizarProfessores(lista) {
 
                         <button
                         class="btn-delete"
-                        onclick="excluirProfessor('${professor.id}')">
+                        data-id="${escapeHtml(professor.id)}"
+                        onclick="excluirProfessor(this.dataset.id)">
 
 
                             Excluir
@@ -1506,7 +1515,7 @@ async function editarProfessor(id) {
 
     try {
 
-        const professor = await api(`/api/Professores/${id}`);
+        const professor = await api(`/api/Professores/${encodeURIComponent(id)}`);
 
         document.getElementById("modalTitulo").innerText =
             "Editar Professor";
@@ -1516,28 +1525,28 @@ async function editarProfessor(id) {
             <input
                 id="editNome"
                 type="text"
-                value="${professor.nome}"
+                value="${escapeHtml(professor.nome)}"
                 placeholder="Nome"
             >
 
             <input
                 id="editEmail"
                 type="email"
-                value="${professor.email}"
+                value="${escapeHtml(professor.email)}"
                 placeholder="E-mail"
             >
 
             <input
                 id="editTelefone"
                 type="text"
-                value="${professor.telefone}"
+                value="${escapeHtml(professor.telefone)}"
                 placeholder="Telefone"
             >
 
             <input
                 id="editEspecialidade"
                 type="text"
-                value="${professor.especialidade}"
+                value="${escapeHtml(professor.especialidade)}"
                 placeholder="Especialidade"
             >
 
@@ -1584,7 +1593,7 @@ async function salvarEdicaoProfessor() {
 
     try {
 
-        await api(`/api/Professores/${idEdicao}`, {
+        await api(`/api/Professores/${encodeURIComponent(idEdicao)}`, {
             method: "PUT",
             body: professorAtualizado
         });
@@ -1618,7 +1627,7 @@ async function excluirProfessor(id) {
 
     try {
 
-        await api(`/api/Professores/${id}`, {
+        await api(`/api/Professores/${encodeURIComponent(id)}`, {
             method: "DELETE"
         });
 
@@ -1732,33 +1741,33 @@ async function renderizarAulas() {
                         <tr>
 
                             <td>
-                                ${aula.titulo}
+                                ${escapeHtml(aula.titulo)}
                             </td>
 
                             <td>
-                                ${aula.professorNome}
+                                ${escapeHtml(aula.professorNome)}
                             </td>
 
                             <td>
-                                ${aula.modalidade}
+                                ${escapeHtml(aula.modalidade)}
                             </td>
 
                             <td>
-                                ${formatarDataHora(
+                                ${escapeHtml(formatarDataHora(
             aula.dataHoraInicio
-        )}
+        ))}
                             </td>
 
                             <td>
-                                ${formatarDataHora(
+                                ${escapeHtml(formatarDataHora(
             aula.dataHoraFim
-        )}
+        ))}
                             </td>
 
                             <td>
 
-                                ${aula.alunosInscritos}/
-                                ${aula.vagasMaximas}
+                                ${escapeHtml(aula.alunosInscritos)}/
+                                ${escapeHtml(aula.vagasMaximas)}
 
                             </td>
 
@@ -1766,7 +1775,8 @@ async function renderizarAulas() {
 
                                 <button
                                     class="btn-edit"
-                                    onclick="editarAula('${aula.id}')">
+                                    data-id="${escapeHtml(aula.id)}"
+                                    onclick="editarAula(this.dataset.id)">
 
                                     Editar
 
@@ -1774,7 +1784,8 @@ async function renderizarAulas() {
 
                                 <button
                                     class="btn-delete"
-                                    onclick="excluirAula('${aula.id}')">
+                                    data-id="${escapeHtml(aula.id)}"
+                                    onclick="excluirAula(this.dataset.id)">
 
                                     Excluir
 
@@ -1782,7 +1793,8 @@ async function renderizarAulas() {
 
                                 <button
     class="btn"
-    onclick="abrirAlunosAula('${aula.id}')">
+    data-id="${escapeHtml(aula.id)}"
+    onclick="abrirAlunosAula(this.dataset.id)">
 
     Alunos
 
@@ -1821,7 +1833,7 @@ async function editarAula(id) {
     try {
 
         const aula =
-            await api(`/api/Aulas/${id}`);
+            await api(`/api/Aulas/${encodeURIComponent(id)}`);
 
         tipoEdicao = "aula";
 
@@ -1836,27 +1848,27 @@ async function editarAula(id) {
                 id="aulaTitulo"
                 type="text"
                 placeholder="Título"
-                value="${aula.titulo || ""}">
+                value="${escapeHtml(aula.titulo)}">
 
             <textarea
                 id="aulaDescricao"
-                placeholder="Descrição">${aula.descricao || ""}</textarea>
+                placeholder="Descrição">${escapeHtml(aula.descricao)}</textarea>
 
             <input
                 id="aulaProfessorId"
                 type="text"
                 placeholder="Professor ID"
-                value="${aula.professorId || ""}">
+                value="${escapeHtml(aula.professorId)}">
 
             <input
                 id="aulaInicio"
                 type="datetime-local"
-                value="${formatarInputDate(aula.dataHoraInicio)}">
+                value="${escapeHtml(formatarInputDate(aula.dataHoraInicio))}">
 
             <input
                 id="aulaFim"
                 type="datetime-local"
-                value="${formatarInputDate(aula.dataHoraFim)}">
+                value="${escapeHtml(formatarInputDate(aula.dataHoraFim))}">
 
             <select id="aulaModalidade">
 
@@ -1886,19 +1898,19 @@ async function editarAula(id) {
                 id="aulaSala"
                 type="text"
                 placeholder="Sala"
-                value="${aula.sala || ""}">
+                value="${escapeHtml(aula.sala)}">
 
             <input
                 id="aulaLink"
                 type="text"
                 placeholder="Link Online"
-                value="${aula.linkOnline || ""}">
+                value="${escapeHtml(aula.linkOnline)}">
 
             <input
                 id="aulaVagas"
                 type="number"
                 placeholder="Vagas"
-                value="${aula.vagasMaximas || 0}">
+                value="${escapeHtml(aula.vagasMaximas || 0)}">
 
         `;
 
@@ -1921,7 +1933,7 @@ async function excluirAula(id) {
 
     try {
 
-        await api(`/api/Aulas/${id}`, {
+        await api(`/api/Aulas/${encodeURIComponent(id)}`, {
             method: "DELETE"
         });
 
@@ -1992,7 +2004,7 @@ async function abrirAlunosAula(aulaId) {
 
         // inscritos na aula + todos os alunos (para o select)
         const [alunos, todosAlunos] = await Promise.all([
-            api(`/api/Aulas/${aulaId}/alunos`),
+            api(`/api/Aulas/${encodeURIComponent(aulaId)}/alunos`),
             api("/api/Alunos?apenasAtivos=true")
         ]);
 
@@ -2018,9 +2030,9 @@ async function abrirAlunosAula(aulaId) {
 
             ${todosAlunos.map(aluno => `
 
-                <option value="${aluno.id}">
+                <option value="${escapeHtml(aluno.id)}">
 
-                    ${aluno.nome}
+                    ${escapeHtml(aluno.nome)}
 
                 </option>
 
@@ -2032,7 +2044,8 @@ async function abrirAlunosAula(aulaId) {
 
     <button
         class="btn-save"
-        onclick="inscreverAluno('${aulaId}')">
+        data-aula-id="${escapeHtml(aulaId)}"
+        onclick="inscreverAluno(this.dataset.aulaId)">
 
         Inscrever Aluno
 
@@ -2065,11 +2078,11 @@ async function abrirAlunosAula(aulaId) {
                     <tr>
 
                         <td>
-                            ${aluno.nome}
+                            ${escapeHtml(aluno.nome)}
                         </td>
 
                         <td>
-                            ${aluno.email}
+                            ${escapeHtml(aluno.email)}
                         </td>
 
                         <td>
@@ -2090,13 +2103,9 @@ async function abrirAlunosAula(aulaId) {
 
                             <button
                                 class="btn-presenca"
-                                onclick="
-                                    registrarPresenca(
-                                        '${aulaId}',
-                                        '${aluno.id}',
-                                        true
-                                    )
-                                ">
+                                data-aula-id="${escapeHtml(aulaId)}"
+                                data-aluno-id="${escapeHtml(aluno.id)}"
+                                onclick="registrarPresenca(this.dataset.aulaId, this.dataset.alunoId, true)">
 
                                 Marcar Presença
 
@@ -2184,7 +2193,7 @@ async function salvarEdicao() {
 
         try {
 
-            await api(`/api/Professores/${idEdicao}`, {
+            await api(`/api/Professores/${encodeURIComponent(idEdicao)}`, {
                 method: "PUT",
                 body: professorAtualizado
             });
@@ -2291,7 +2300,7 @@ async function salvarEdicao() {
             // =========================
             else {
 
-                await api(`/api/Aulas/${idEdicao}`, {
+                await api(`/api/Aulas/${encodeURIComponent(idEdicao)}`, {
                     method: "PUT",
                     body
                 });
@@ -2862,7 +2871,7 @@ document.getElementById("formContato").addEventListener(
 
 
 // Token vencido de uma visita anterior: encerra a sessão em silêncio.
-if (localStorage.getItem("token") && !usuarioEstaLogado()) {
+if (obterToken() && !usuarioEstaLogado()) {
     limparSessao();
 }
 
