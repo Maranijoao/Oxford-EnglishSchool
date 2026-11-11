@@ -48,7 +48,7 @@ async function realizarLogin() {
 
     if (email === "" || senha === "") {
 
-        alert("Preencha e-mail e senha.");
+        alert("Preencha o login e a senha.");
 
         return;
     }

@@ -43,6 +43,14 @@ flowchart LR
    - `Admin__Senha` → senha do administrador (fica só no Render, não no código)
    - `Cors__AllowedOrigins` → `https://maranijoao.github.io`
    - `Jwt__Key` é gerada automaticamente e `Seed__DadosExemplo` já vem `true`.
+   - Usuários adicionais (opcional): em **Environment**, adicione um grupo por usuário,
+     trocando o número (`0`, `1`, `2`…). O login pode ser um nome simples ou um e-mail.
+     - `Usuarios__0__Login` → login (ex.: `mariana`)
+     - `Usuarios__0__Senha` → senha (fica só no Render)
+     - `Usuarios__0__Nome` → nome exibido no cabeçalho (opcional)
+
+     A API cria esses usuários sempre que inicia, se ainda não existirem.
+     Por isso eles continuam valendo mesmo quando o banco é recriado.
 5. Aguarde o build. Teste:
    - `https://oxford-api.onrender.com/health` → `Healthy`
    - `https://oxford-api.onrender.com/api/Relatorios/dashboard` → contagens públicas

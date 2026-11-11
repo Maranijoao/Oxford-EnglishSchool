@@ -30,6 +30,8 @@ public static class DbInitializer
 
         await CriarAdminAsync(db, config, log);
 
+        await CriarUsuariosExtrasAsync(db, config, log);
+
         if (config.GetValue("Seed:DadosExemplo", false))
             await CriarDadosExemploAsync(db, log);
     }
@@ -61,6 +63,42 @@ public static class DbInitializer
 
         await db.SaveChangesAsync();
         log.LogInformation("Usuário administrador {Email} criado.", email);
+    }
+
+    // Usuários adicionais, definidos só na configuração (nunca no código):
+    //   Usuarios__0__Login = mariana
+    //   Usuarios__0__Senha = (segredo)
+    //   Usuarios__0__Nome  = Mariana        (opcional)
+    // Roda a cada inicialização e cria apenas quem ainda não existe,
+    // então o login sobrevive ao banco recriado no plano gratuito.
+    private static async Task CriarUsuariosExtrasAsync(AppDbContext db, IConfiguration config, ILogger log)
+    {
+        foreach (var item in config.GetSection("Usuarios").GetChildren())
+        {
+            var login = item["Login"]?.Trim();
+            var senha = item["Senha"];
+
+            if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(senha))
+            {
+                log.LogWarning("Usuarios:{Indice} ignorado: defina Login e Senha.", item.Key);
+                continue;
+            }
+
+            if (await db.Usuarios.AnyAsync(u => u.Email == login)) continue;
+
+            db.Usuarios.Add(new Usuario
+            {
+                Id          = Guid.NewGuid(),
+                Nome        = string.IsNullOrWhiteSpace(item["Nome"]) ? login : item["Nome"]!,
+                Email       = login,
+                SenhaHash   = BCrypt.Net.BCrypt.HashPassword(senha, 11),
+                Ativo       = true,
+                DataCriacao = DateTime.UtcNow
+            });
+
+            await db.SaveChangesAsync();
+            log.LogInformation("Usuário {Login} criado.", login);
+        }
     }
 
     private static async Task CriarDadosExemploAsync(AppDbContext db, ILogger log)
