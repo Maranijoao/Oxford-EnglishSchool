@@ -94,6 +94,19 @@ Ao alterar arquivos do front, incremente `VERSION` em `sw.js` para os usuários 
   aponta automaticamente para `https://localhost:7131`).
 - Para zerar o banco local, apague `oxford.db` e rode a API de novo.
 
+### Demonstração: criar um usuário pelo Swagger
+
+1. Rode a API localmente (perfil **https**) e abra `/swagger`.
+2. `POST /api/Auth/login` com o login de desenvolvimento → copie o `token`.
+3. Clique em **Authorize** e cole o token.
+4. `POST /api/Usuarios` com `{ "login": "mariana", "senha": "…", "nome": "Mariana" }` → **201**.
+5. `GET /api/Usuarios` → o novo usuário aparece, lido do banco (sem a senha).
+6. Entre no site com o novo login: prova de que front, API e banco estão ligados.
+
+Login repetido devolve **409**; senha com menos de 8 caracteres, **400**.
+No Render gratuito, usuários criados assim duram até o banco ser recriado
+(hibernação ou novo deploy). Para um usuário fixo, use `Usuarios__N__…` (seção 1).
+
 ## 4. Pipeline CI/CD (GitHub Actions)
 
 | Workflow | Quando roda | O que faz |

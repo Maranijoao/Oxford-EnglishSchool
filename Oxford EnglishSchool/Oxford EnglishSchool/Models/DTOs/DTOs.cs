@@ -100,3 +100,20 @@ public record AulaResponseDto(
 // ─── Inscrição ────────────────────────────────
 public record InscricaoDto(Guid AlunoId, Guid AulaId);
 public record PresencaDto(Guid AlunoId, Guid AulaId, bool Presenca);
+
+// ─── Usuário (acesso ao sistema) ──────────────
+// Login pode ser um nome simples ("mariana") ou um e-mail.
+public record UsuarioCreateDto(
+    string Login,
+    string Senha,
+    string? Nome
+);
+
+// Nunca devolve o hash da senha.
+public record UsuarioResponseDto(
+    Guid Id,
+    string Nome,
+    string Login,
+    bool Ativo,
+    DateTime DataCriacao
+);
